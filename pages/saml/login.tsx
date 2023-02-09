@@ -11,7 +11,7 @@ export default function Login() {
     username: 'alice',
     domain: 'example.com',
     acsUrl: 'https://jackson-demo.boxyhq.com/api/oauth/saml',
-    audience: 'https://saml.boxyhq.com',
+    audience: audience || 'https://saml.boxyhq.com',
   });
 
   const acsUrlInp = useRef<HTMLInputElement>(null);
@@ -47,7 +47,7 @@ export default function Login() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: `${username}@${domain}`,
+        email: subject || `${username}@${domain}`,
         id,
         audience: audience || state.audience,
         acsUrl: acsUrl || state.acsUrl,
@@ -116,37 +116,57 @@ export default function Login() {
                       </div>
                     </div>
                   ) : null}
-                  <div className='form-control'>
-                    <label className='label'>
-                      <span className='label-text font-bold'>Email</span>
-                    </label>
-                    <input
-                      name='username'
-                      id='username'
-                      ref={emailInp}
-                      autoComplete='off'
-                      type='text'
-                      placeholder='jackson'
-                      value={state.username}
-                      onChange={handleChange}
-                      className='input input-bordered'
-                      title='Please provide a mock email address'
-                    />
-                  </div>
-                  <div className='form-control'>
-                    <label className='label'>
-                      <span className='label-text font-bold'>Domain</span>
-                    </label>
-                    <select
-                      name='domain'
-                      id='domain'
-                      className='select select-bordered'
-                      onChange={handleChange}
-                      value={state.domain}>
-                      <option value='mail.com'>@mail.com</option>
-                      <option value='samlclient.com'>@samlclient.com</option>
-                    </select>
-                  </div>
+                  {!subject ? (
+                    <div className='form-control'>
+                      <label className='label'>
+                        <span className='label-text font-bold'>Email</span>
+                      </label>
+                      <input
+                        name='username'
+                        id='username'
+                        ref={emailInp}
+                        autoComplete='off'
+                        type='text'
+                        placeholder='jackson'
+                        value={state.username}
+                        onChange={handleChange}
+                        className='input input-bordered'
+                        title='Please provide a mock email address'
+                      />
+                    </div>
+                  ) : null}
+                  {!subject ? (
+                    <div className='form-control'>
+                      <label className='label'>
+                        <span className='label-text font-bold'>Domain</span>
+                      </label>
+                      <select
+                        name='domain'
+                        id='domain'
+                        className='select select-bordered'
+                        onChange={handleChange}
+                        value={state.domain}>
+                        <option value='mail.com'>@mail.com</option>
+                        <option value='samlclient.com'>@samlclient.com</option>
+                      </select>
+                    </div>
+                  ) : null}
+                  {subject ? (
+                    <div className='form-control col-span-2'>
+                      <label className='label'>
+                        <span className='label-text font-bold'>Subject</span>
+                      </label>
+                      <input
+                        id='subject'
+                        value={subject}
+                        className='input input-bordered'
+                        readOnly={true}
+                      />
+                      <label className='label'>
+                        <span className='label-text-alt'>Pre-filled subject from the SP</span>
+                      </label>
+                    </div>
+                  ) : null}
                   <div className='form-control col-span-2'>
                     <label className='label'>
                       <span className='label-text font-bold'>Password</span>

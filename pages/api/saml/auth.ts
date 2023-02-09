@@ -7,9 +7,9 @@ import saml from '@boxyhq/saml20';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const { email, audience, acsUrl, id, relayState, subject } = req.body;
+    const { email, audience, acsUrl, id, relayState } = req.body;
 
-    if (config.allowedDomains.includes(email.split(',').pop())) {
+    if (!config.allowedDomains.includes(email.split('@').pop())) {
       res.status(403).send(`${email} denied access`);
     }
 
