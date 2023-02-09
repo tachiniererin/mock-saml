@@ -52,13 +52,16 @@ jobs:
       - name: Build and push
         # if: github.ref == 'refs/heads/release'
         id: docker_build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ./
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ github.repository }}:latest,${{ github.repository }}:${{ steps.slug.outputs.sha7 }},${{ github.repository }}:${{ steps.npmversion.outputs.npmversion }}
+          tags: |
+            ghcr.io/${{ github.username }}/${{ github.repository }}:latest
+            ghcr.io/${{ github.username }}/${{ github.repository }}:${{ steps.slug.outputs.sha7 }}
+            ghcr.io/${{ github.username }}/${{ github.repository }}:${{ steps.npmversion.outputs.npmversion }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
