@@ -59,9 +59,9 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/${{ github.username }}/${{ github.repository }}:latest
-            ghcr.io/${{ github.username }}/${{ github.repository }}:${{ steps.slug.outputs.sha7 }}
-            ghcr.io/${{ github.username }}/${{ github.repository }}:${{ steps.npmversion.outputs.npmversion }}
+            ghcr.io${{ github.username }}/${{ github.repository }}:latest
+            ghcr.io${{ github.username }}/${{ github.repository }}:${{ steps.slug.outputs.sha7 }}
+            ghcr.io${{ github.username }}/${{ github.repository }}:${{ steps.npmversion.outputs.npmversion }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
