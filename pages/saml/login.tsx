@@ -5,10 +5,10 @@ import { useEffect, useRef, useState } from 'react';
 
 export default function Login() {
   const router = useRouter();
-  const { id, audience, acsUrl, providerName, relayState } = router.query;
+  const { id, audience, acsUrl, providerName, relayState, subject } = router.query;
 
   const [state, setState] = useState({
-    username: 'jackson',
+    username: 'alice',
     domain: 'example.com',
     acsUrl: 'https://jackson-demo.boxyhq.com/api/oauth/saml',
     audience: 'https://saml.boxyhq.com',
@@ -143,8 +143,8 @@ export default function Login() {
                       className='select select-bordered'
                       onChange={handleChange}
                       value={state.domain}>
-                      <option value='example.com'>@example.com</option>
-                      <option value='example.org'>@example.org</option>
+                      <option value='mail.com'>@mail.com</option>
+                      <option value='samlclient.com'>@samlclient.com</option>
                     </select>
                   </div>
                   <div className='form-control col-span-2'>

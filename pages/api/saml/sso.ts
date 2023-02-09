@@ -29,14 +29,16 @@ async function processSAMLRequest(req: NextApiRequest, res: NextApiResponse, isP
   try {
     const rawRequest = await decodeBase64(samlRequest, isDeflated);
 
-    const { id, audience, acsUrl, providerName, publicKey } = await extractSAMLRequestAttributes(rawRequest);
+    const { id, audience, acsUrl, providerName, publicKey, subject } = await extractSAMLRequestAttributes(rawRequest);
 
-    const { valid } = await saml.hasValidSignature(rawRequest, publicKey, null);
-    if (!valid) {
-      throw new Error('Invalid signature');
+    if (publicKey) {
+      const { valid } = await saml.hasValidSignature(rawRequest, publicKey, null);
+      if (!valid) {
+        throw new Error('Invalid signature');
+      }
     }
 
-    const params = new URLSearchParams({ id, audience, acsUrl, providerName, relayState });
+    const params = new URLSearchParams({ id, audience, acsUrl, providerName, relayState, subject });
 
     res.redirect(302, `/saml/login?${params.toString()}`);
   } catch (err) {
